@@ -1,0 +1,56 @@
+---
+title: "Assignment 2"
+author: "Iryna Barvi"
+date: "4/3/2022"
+output: word_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(knitr)
+library(bslib)
+```
+
+
+```{r, include = TRUE}
+# Section 1: Description of the data. (10 points)
+# The dataset I am using is the data behind the story Should Travelers Avoid Flying Airlines That Have Had Crashes in the Past?. The dataset contains information about airlines, the available seat kilometers flown every week, and the number of incidents and fatalities. This data was collected by the Aviation Safety Network between 1985 and 2014. From this dataset, I want to find the correlation between fatalities and the airline involved. This is .csv file with comma delimiters.
+```
+
+```{r, include = TRUE}
+# Section 2: Reading the data into R. (5 points)
+airlines <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/airline-safety/airline-safety.csv"
+airline_safety <- read.csv(airlines)
+```
+
+```{r, include = TRUE}
+# Section 3: Clean the data. (10 points) 
+
+colnames(airline_safety)
+f1 <- rename(airline_safety, Airline = airline)
+f2 <- rename(f1, Available_Seat_Km_Per_Week = avail_seat_km_per_week)
+f3 <- rename(f2, Incidents_1985_1999 = incidents_85_99)
+f4 <- rename(f3, Fatal_Accidents_1985_1999 = fatal_accidents_85_99)
+f5 <- rename(f4, Fatalities_1985_1999 = fatalities_85_99)
+f6 <- rename(f5, Incidents_2000_2012 = incidents_00_14)
+f7 <- rename(f6, Fatal_Accidents_2000_2012 = fatal_accidents_00_14)
+f8 <- rename(f7, Fatalities_2000_2012 = fatalities_00_14)
+colnames(f8)
+```
+
+```{r, include = TRUE}
+# Section 4: Characteristics of the data. (20 points)
+```
+This dataframe has `r nrow(f8)` rows and `r ncol(f8)` columns. The names of the columns and a brief description of each are in the table below:
+```{r, include = TRUE}
+airline_table <- matrix(c("Airline","Airline (asterisk indicates that regional subsidiaries are included)","Available Seat Km Per Week","Available seat kilometers flown every week","Incidents 1985 1999","Total number of incidents, 1985–1999","Fatal Accidents 1985 1999","Total number of fatal accidents, 1985–1999","Fatalities 1985 1999","Total number of fatalities, 1985–1999","Incidents 2000 2012","Total number of incidents, 2000–2014","Fatal Accidents 2000 2012","Total number of fatal accidents, 2000–2014","Fatalities 2000 2012","Total number of fatalities, 2000–2014"),ncol = 2, byrow = TRUE)
+colnames(airline_table) <- c('Header','Definition')
+airline_table <-as.table(airline_table)
+airline_table
+```
+```{r, include = TRUE}
+# Section 5: Summary statistics. (20 points)
+airline_four <- subset(f8, select=c(Airline,Available_Seat_Km_Per_Week,Fatalities_2000_2012))
+airline_summary <- summary(airline_four)
+print(airline_summary)
+```
